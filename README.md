@@ -1,3 +1,5 @@
+[Thunderstore page (soon)]
+
 A fourth difficulty option, for those who have already conquered Monsoon.
 
 Difficulty changes (from Monsoon):  
