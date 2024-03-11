@@ -1,11 +1,11 @@
-[Thunderstore page (soon)]
-
 A fourth difficulty option, for those who have already conquered Monsoon.
 
 Difficulty changes (from Monsoon):  
+```
 * Director credits:     + 50%
 * Enemy move speed:     + 25%
 * All healing:          - 50%
+```
 
 ---
 
