@@ -1,4 +1,4 @@
--- Deluge v1.0.1
+-- Deluge v1.0.2
 -- Klehrik
 
 log.info("Successfully loaded ".._ENV["!guid"]..".")
@@ -92,6 +92,7 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
         if init then pref_name = init.pref_name end
 
         -- Get the player that belongs to this client
+        local player = nil
         local players = find_all_cinstance_type(gm.constants.oP)
         if players then
             for i = 1, #players do
