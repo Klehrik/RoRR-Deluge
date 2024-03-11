@@ -1,7 +1,8 @@
 A fourth difficulty option, for those who have already conquered Monsoon.
 
-Difficulty Changes 
 ```
+[Difficulty Changes]
+
 * Director credits:     + 50%
 * Enemy move speed:     + 25%
 * All healing:          - 50%
