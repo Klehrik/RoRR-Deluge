@@ -11,6 +11,9 @@ local stored_time = 0
 local point_increment = 0
 local stored_health = 0
 
+local director = nil
+local player = nil
+
 local file_path = path.combine(paths.plugins_data(), "Klehrik-Deluge.txt")
 local succeeded, from_file = pcall(toml.decodeFromFile, file_path)
 if succeeded then
@@ -54,8 +57,7 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
 
 
     if enabled then
-        local director = find_cinstance_type(gm.constants.oDirectorControl)
-        if director then
+        if director and gm.instance_exists(director) then
 
             -- Every frame, get the point increment and increment again
             if stored_time < director.time_start then
@@ -66,6 +68,8 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
                 stored_points = director.points + point_increment
                 director.points = director.points + point_increment
             end
+        
+        else director = find_cinstance_type(gm.constants.oDirectorControl)
         end
 
 
@@ -87,31 +91,31 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
         end
 
 
-        -- Using pref_name to identify which player is this client
-        local pref_name = ""
-        local init = find_cinstance_type(gm.constants.oInit)
-        if init then pref_name = init.pref_name end
-
-        -- Get the player that belongs to this client
-        local player = nil
-        local players = find_all_cinstance_type(gm.constants.oP)
-        if players then
-            for i = 1, #players do
-                if players[i] then
-                    if players[i].user_name == pref_name then
-                        player = players[i]
-                        break
-                    end
-                end
-            end
-        end
-
         -- Remove 50% of all healing
-        if player then
+        if player and gm.instance_exists(player) then
             if stored_health > 0 and player.hp > stored_health then
                 player.hp = player.hp - ((player.hp - stored_health) * 0.5)
             end
             stored_health = player.hp
+        else
+            -- Using pref_name to identify which player is this client
+            local pref_name = ""
+            local init = find_cinstance_type(gm.constants.oInit)
+            if init then pref_name = init.pref_name end
+
+            -- Get the player that belongs to this client
+            local players = find_all_cinstance_type(gm.constants.oP)
+            if players then
+                for i = 1, #players do
+                    if players[i] then
+                        if players[i].user_name == pref_name then
+                            player = players[i]
+                            break
+                        end
+                    end
+                end
+            end
+
         end
     end
 end)
