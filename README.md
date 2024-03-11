@@ -11,6 +11,8 @@ A fourth difficulty option, for those who have already conquered Monsoon.
 You must select Monsoon as a base difficulty for Deluge modifiers to apply.  
 (Can only be toggled while on the character select screen)
 
+Not tested in multiplayer, but maybe it will work(?)
+
 ---
 
 ### Installation Instructions
