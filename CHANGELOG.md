@@ -6,3 +6,7 @@
 
 ### v1.0.2
 * Fixed healing reduction not applying in subsequent runs (I forgot to initialize a variable).
+
+### v1.0.3
+* Made optimizations (to a few of my mods) to reduce load.
+* Increased enemy move speed bonus to 30%.

@@ -1,12 +1,10 @@
-[Thunderstore page](https://thunderstore.io/c/risk-of-rain-returns/p/Klehrik/Deluge/)
-
 A fourth difficulty option, for those who have already conquered Monsoon.
 
 ```
 [Difficulty Changes]
 
 * Director credits:     + 50%
-* Enemy move speed:     + 25%
+* Enemy move speed:     + 30%
 * All healing:          - 50%
 ```
 
