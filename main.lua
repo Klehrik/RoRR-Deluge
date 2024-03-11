@@ -1,4 +1,4 @@
--- Deluge v1.0.3
+-- Deluge v1.0.4
 -- Klehrik
 
 log.info("Successfully loaded ".._ENV["!guid"]..".")
@@ -26,7 +26,7 @@ end
 
 gui.add_imgui(function()
     if ImGui.Begin("Deluge") then
-        ImGui.Text("A fourth difficulty option, for those\nwho have already conquered Monsoon.\n\nDirector credits:           + 50%\nEnemy move speed:    + 25%\nAll healing:                   - 50%\n\nYou must select Monsoon as a base\ndifficulty for Deluge modifiers to apply.\n\n(Can only be toggled while on\nthe character select screen)\n ")
+        ImGui.Text("A fourth difficulty option, for those\nwho have already conquered Monsoon.\n\nDirector credits:           + 50%\nEnemy move speed:    + 30%\nAll healing:                   - 50%\n\nYou must select Monsoon as a base\ndifficulty for Deluge modifiers to apply.\n\n(Can only be toggled while on\nthe character select screen)\n ")
 
         local can_toggle = find_cinstance_type(gm.constants.oSelectMenu)
 

@@ -10,3 +10,6 @@
 ### v1.0.3
 * Made optimizations (to a few of my mods) to reduce load.
 * Increased enemy move speed bonus to 30%.
+
+### v1.0.4
+* Fixed in-game text still saying +25%.
