@@ -23,9 +23,9 @@ end
 
 gui.add_imgui(function()
     if ImGui.Begin("Deluge") then
-        ImGui.Text("A fourth difficulty option, for those\nwho have already conquered Monsoon.\n\nDirector credits:           + 50%\nEnemy move speed:    + 25%\nAll healing:                   - 50%\n\nYou must select Monsoon as a base\ndifficulty for Deluge modifiers to apply.\n\n(Cannot be toggled during a run)\n ")
+        ImGui.Text("A fourth difficulty option, for those\nwho have already conquered Monsoon.\n\nDirector credits:           + 50%\nEnemy move speed:    + 25%\nAll healing:                   - 50%\n\nYou must select Monsoon as a base\ndifficulty for Deluge modifiers to apply.\n\n(Can only be toggled while on\nthe character select screen)\n ")
 
-        local can_toggle = not find_cinstance_type(gm.constants.oStageControl)
+        local can_toggle = find_cinstance_type(gm.constants.oSelectMenu)
 
         local status = "DISABLED"
         if enabled then status = "! ENABLED !" end

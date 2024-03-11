@@ -8,6 +8,9 @@ A fourth difficulty option, for those who have already conquered Monsoon.
 * All healing:          - 50%
 ```
 
+You must select Monsoon as a base difficulty for Deluge modifiers to apply.  
+(Can only be toggled while on the character select screen)
+
 ---
 
 ### Installation Instructions
