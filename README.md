@@ -1,3 +1,5 @@
+[Thunderstore page](https://thunderstore.io/c/risk-of-rain-returns/p/Klehrik/Deluge/)
+
 A fourth difficulty option, for those who have already conquered Monsoon.
 
 ```
