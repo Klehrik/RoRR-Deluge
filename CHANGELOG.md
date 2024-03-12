@@ -13,3 +13,11 @@
 
 ### v1.0.4
 * Fixed in-game text still saying +25%.
+
+### v1.0.5
+* Reverted enemy speed bonus to +25%.
+    * I threw in the extra 5% almost idly, but it turned out to have (in my opinion) a noticable impact that I didn't really like.
+* Health gained from leveling up is no longer subjected to the 50% "healing" reduction.
+* Edited Victory result screen to display the difficulty name and icon.
+    * Note: This does NOT save to the Run History or Highscores tab, and is just a visual at the very end.
+* Victory count for each character on this difficulty is now kept track of in the Deluge window.

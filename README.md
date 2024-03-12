@@ -1,12 +1,10 @@
-[Thunderstore page](https://thunderstore.io/c/risk-of-rain-returns/p/Klehrik/Deluge/)
-
 A fourth difficulty option, for those who have already conquered Monsoon.
 
 ```
 [Difficulty Changes]
 
 * Director credits:     + 50%
-* Enemy move speed:     + 30%
+* Enemy move speed:     + 25%
 * All healing:          - 50%
 ```
 
@@ -14,6 +12,8 @@ You must select Monsoon as a base difficulty for Deluge modifiers to apply.
 (Can only be toggled while on the character select screen)
 
 Not tested in multiplayer, but maybe it will work(?)
+
+The difficulty name and icon displayed on the Victory screen does NOT save to the Run History or Highscores tab, and is just a visual at the very end.
 
 ---
 
