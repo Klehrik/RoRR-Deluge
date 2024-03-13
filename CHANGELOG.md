@@ -21,3 +21,9 @@
 * Edited Victory result screen to display the difficulty name and icon.
     * Note: This does NOT save to the Run History or Highscores tab, and is just a visual at the very end.
 * Victory count for each character on this difficulty is now kept track of in the Deluge window.
+
+### v1.1.0
+* Now actually selectable as a Difficulty option on the character select screen.
+* Director credit increase has been swapped for increased time scaling, but functionally it (should be) the same.
+* "Healing" gained from progressing to the next stage is no longer subjected to the 50% healing reduction.
+* Fixed variables not resetting properly when pressing "Try Again" after death (the following run would be easier for a bit).

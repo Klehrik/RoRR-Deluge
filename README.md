@@ -1,6 +1,4 @@
-[Thunderstore page](https://thunderstore.io/c/risk-of-rain-returns/p/Klehrik/Deluge/)
-
-A fourth difficulty option, for those who have already conquered Monsoon.
+Adds a fourth difficulty option, for those who have conquered Monsoon.
 
 ```
 [Difficulty Changes]
@@ -10,12 +8,9 @@ A fourth difficulty option, for those who have already conquered Monsoon.
 * All healing:          - 50%
 ```
 
-You must select Monsoon as a base difficulty for Deluge modifiers to apply.  
-(Can only be toggled while on the character select screen)
+**Not tested in multiplayer**, but maybe it will work(?)
 
-Not tested in multiplayer, but maybe it will work(?)
-
-The difficulty name and icon displayed on the Victory screen does NOT save to the Run History or Highscores tab, and is just a visual at the very end.
+**VERY IMPORTANT NOTE**: If you ever uninstall this mod, make sure the saved Difficulty selection on the character select screen is **not** set to Deluge, as the game will crash (due to pointing at a no longer existing difficulty).
 
 ---
 
@@ -29,5 +24,4 @@ The difficulty name and icon displayed on the Victory screen does NOT save to th
 
 
 ### Usage
-* Press the Insert key to bring up the Deluge window.
-* Click on the button to toggle it.
+* Select it under the Difficulty tab on the character select screen.
