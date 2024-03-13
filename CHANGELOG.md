@@ -24,6 +24,8 @@
 
 ### v1.1.0
 * Now actually selectable as a Difficulty option on the character select screen.
-* Director credit increase has been swapped for increased time scaling, but functionally it (should be) the same.
 * "Healing" gained from progressing to the next stage is no longer subjected to the 50% healing reduction.
 * Fixed variables not resetting properly when pressing "Try Again" after death (the following run would be easier for a bit).
+
+### v1.1.1
+* Fixed difficulty selection being ordered before Drizzle.

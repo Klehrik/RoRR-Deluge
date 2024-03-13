@@ -1,8 +1,10 @@
--- Deluge v1.1.0
+-- Deluge v1.1.1
 -- Klehrik
 
 log.info("Successfully loaded ".._ENV["!guid"]..".")
 require("./helper")
+
+local initialized_diff = false
 
 local enabled = false
 local stored_time = 0
@@ -32,36 +34,14 @@ local diff_icon2x = gm.sprite_add(icon_path2x, 4, false, false, 25, 19)
 if diff_gray ~= -1 and diff_color ~= -1 then log.info("Loaded difficulty icon sprites.")
 else log.info("Failed to load difficulty icon sprites.") end
 
+local diff_id = -1
+
 
 -- Parameters
 -- * Remember to update the description text below if modified
 local point_scaling = 0.5
 local speed_bonus = 0.25
 local healing_reduction = 0.5
-
-
--- Initialize difficulty
-local diff_id = gm.difficulty_create("klehrik", "deluge")   -- namespace, identifier
-local class_diff = gm.variable_global_get("class_difficulty")[diff_id + 1]
-local values = {
-    "Deluge",       -- Name
-    "For those who have conquered Monsoon.\nYou will be washed away in a flood of pain.\n\n<c_stack>Director credits     + 50%\nEnemy move speed    + 25%\nAll healing            - 50%",  -- Description
-    diff_icon,      -- Sprite ID
-    diff_icon2x,    -- Sprite Loadout ID
-    7554098,        -- Primary Color
-    gm.constants.wUI_Select,    -- Sound ID
-    0.16,           -- diff_scale; Affects enemy stat scaling (health and damage)
-                    --     0.06 (Drizzle), 0.12 (Rainstorm), 0.16 (Monsoon)
-    3.0,            -- general_scale; Affects timer and chest price scaling
-                    --     The text update and bell sound only update/play at the start of every minute
-                    --     1.0 (Drizzle), 2.0 (Rainstorm), 3.0 (Monsoon)
-    1.7 * (1 + point_scaling),  -- point_scale; Affects point scaling, with the increase at any minute being 2.0 + (this * minutesElapsed)
-                    --                 e.g., with Monsoon's 1.7, at 5 minutes, the director gets 2.0 + (1.7 * 5) = 10.5 points per second
-                    --                 1.0 (Drizzle), 1.0 (Rainstorm), 1.7 (Monsoon)
-    true,           -- Either "is monsoon or higher" or "allow blight spawns"
-    true            -- Whichever one the bool above isn't
-}
-for i = 2, 12 do gm.array_set(class_diff, i, values[i - 1]) end
 
 
 
@@ -92,6 +72,36 @@ end)
 
 
 gm.pre_script_hook(gm.constants.__input_system_tick, function()
+
+    -- Initialize difficulty
+    -- Hopefully initializing this here will order it after the rest properly
+
+    if not initialized_diff then
+        initialized_diff = true
+
+        diff_id = gm.difficulty_create("klehrik", "deluge")   -- namespace, identifier
+        local class_diff = gm.variable_global_get("class_difficulty")[diff_id + 1]
+        local values = {
+            "Deluge",       -- Name
+            "For those who have conquered Monsoon.\nYou will be washed away in a flood of pain.\n\n<c_stack>Director credits     + 50%\nEnemy move speed    + 25%\nAll healing            - 50%",  -- Description
+            diff_icon,      -- Sprite ID
+            diff_icon2x,    -- Sprite Loadout ID
+            7554098,        -- Primary Color
+            gm.constants.wUI_Select,    -- Sound ID
+            0.16,           -- diff_scale; Affects enemy stat scaling (health and damage)
+                            --     0.06 (Drizzle), 0.12 (Rainstorm), 0.16 (Monsoon)
+            3.0,            -- general_scale; Affects timer and chest price scaling
+                            --     The text update and bell sound only update/play at the start of every minute
+                            --     1.0 (Drizzle), 2.0 (Rainstorm), 3.0 (Monsoon)
+            1.7 * (1 + point_scaling),  -- point_scale; Affects point scaling, with the increase at any minute being 2.0 + (this * minutesElapsed)
+                            --                 e.g., with Monsoon's 1.7, at 5 minutes, the director gets 2.0 + (1.7 * 5) = 10.5 points per second
+                            --                 1.0 (Drizzle), 1.0 (Rainstorm), 1.7 (Monsoon)
+            true,           -- Either "is monsoon or higher" or "allow blight spawns"
+            true            -- Whichever one the bool above isn't
+        }
+        for i = 2, 12 do gm.array_set(class_diff, i, values[i - 1]) end
+    end
+
 
     -- Reset some variables on the character select screen
     local select_ = find_cinstance_type(gm.constants.oSelectMenu)
