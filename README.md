@@ -1,5 +1,3 @@
-[Thunderstore page](https://thunderstore.io/c/risk-of-rain-returns/p/Klehrik/Deluge/)
-
 Adds a fourth difficulty option, for those who have conquered Monsoon.
 
 ```
@@ -11,6 +9,7 @@ Adds a fourth difficulty option, for those who have conquered Monsoon.
 ```
 
 **Not tested in multiplayer**, but maybe it will work(?)
+Try turning off "Allow Rule Voting"
 
 **VERY IMPORTANT NOTE**: If you ever uninstall this mod, make sure the saved Difficulty selection on the character select screen is **not** set to Deluge, as the game will crash (due to pointing at a no longer existing difficulty).
 

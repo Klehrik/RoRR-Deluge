@@ -29,3 +29,6 @@
 
 ### v1.1.1
 * Fixed difficulty selection being ordered before Drizzle.
+
+### v1.1.2
+* Added selection sfx.

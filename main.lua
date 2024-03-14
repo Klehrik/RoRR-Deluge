@@ -1,4 +1,4 @@
--- Deluge v1.1.1
+-- Deluge v1.1.2
 -- Klehrik
 
 log.info("Successfully loaded ".._ENV["!guid"]..".")
@@ -34,7 +34,11 @@ local diff_icon2x = gm.sprite_add(icon_path2x, 4, false, false, 25, 19)
 if diff_gray ~= -1 and diff_color ~= -1 then log.info("Loaded difficulty icon sprites.")
 else log.info("Failed to load difficulty icon sprites.") end
 
-local diff_id = -1
+local diff_sfx = gm.audio_create_stream(_ENV["!plugins_mod_folder_path"].."/deluge.ogg")
+if diff_sfx ~= -1 then log.info("Loaded difficulty sfx.")
+else log.info("Failed to load difficulty sfx.") end
+
+local diff_id = -2
 
 
 -- Parameters
@@ -87,7 +91,7 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
             diff_icon,      -- Sprite ID
             diff_icon2x,    -- Sprite Loadout ID
             7554098,        -- Primary Color
-            gm.constants.wUI_Select,    -- Sound ID
+            diff_sfx,    -- Sound ID
             0.16,           -- diff_scale; Affects enemy stat scaling (health and damage)
                             --     0.06 (Drizzle), 0.12 (Rainstorm), 0.16 (Monsoon)
             3.0,            -- general_scale; Affects timer and chest price scaling
