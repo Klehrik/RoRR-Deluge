@@ -1,21 +1,18 @@
--- Deluge v1.1.2
+-- Deluge v1.1.3
 -- Klehrik
 
 log.info("Successfully loaded ".._ENV["!guid"]..".")
-require("./helper")
+Helper = require("./helper")
 
 local initialized_diff = false
 
 local enabled = false
 local stored_time = 0
-local stored_stages = 0
-local stored_health = 0
-local stored_max_health = 0     -- Make sure the health gained from max hp increase isn't affected by "healing" reduction
-local credits_init = false
 local current_char = 0
+local credits_init = false
+local run_start_init = false
 
 local director = nil
-local player = nil
 
 local victory = {}
 for i = 1, 16 do table.insert(victory, 0) end
@@ -51,11 +48,6 @@ local healing_reduction = 0.5
 
 -- ========== Main ==========
 
-local function does_instance_exist(inst)
-    return inst and gm._mod_instance_valid(inst) == 1.0
-end
-
-
 gui.add_imgui(function()
     if ImGui.Begin("Deluge") then
         -- Description
@@ -75,15 +67,33 @@ gui.add_imgui(function()
 end)
 
 
+gm.pre_script_hook(gm.constants.actor_heal_networked, function(self, other, result, args)
+    -- Reduce player healing by 50%
+    if enabled and args[1].value.object_index == gm.constants.oP then
+        args[2].value = args[2].value * (1.0 - healing_reduction)
+    end
+end)
+
+
+gm.pre_script_hook(gm.constants.step_actor, function(self, other, result, args)
+    -- Apply speed bonus
+    if enabled and self.team == 2.0 and self.deluge_speed_boost == nil then
+        self.deluge_speed_boost = true
+
+        if self.pHmax ~= nil then
+            self.pHmax = self.pHmax * (1 + speed_bonus)
+            self.pHmax_base = self.pHmax
+        end
+    end
+end)
+
+
 gm.pre_script_hook(gm.constants.__input_system_tick, function()
-
     -- Initialize difficulty
-    -- Hopefully initializing this here will order it after the rest properly
-
     if not initialized_diff then
         initialized_diff = true
 
-        diff_id = gm.difficulty_create("klehrik", "deluge")   -- namespace, identifier
+        diff_id = gm.difficulty_create("klehrik", "deluge")   -- Namespace, Identifier
         local class_diff = gm.variable_global_get("class_difficulty")[diff_id + 1]
         local values = {
             "Deluge",       -- Name
@@ -91,7 +101,7 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
             diff_icon,      -- Sprite ID
             diff_icon2x,    -- Sprite Loadout ID
             7554098,        -- Primary Color
-            diff_sfx,    -- Sound ID
+            diff_sfx,       -- Sound ID
             0.16,           -- diff_scale; Affects enemy stat scaling (health and damage)
                             --     0.06 (Drizzle), 0.12 (Rainstorm), 0.16 (Monsoon)
             3.0,            -- general_scale; Affects timer and chest price scaling
@@ -108,10 +118,11 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
 
 
     -- Reset some variables on the character select screen
-    local select_ = find_cinstance_type(gm.constants.oSelectMenu)
-    if select_ then
+    local select_ = Helper.find_active_instance(gm.constants.oSelectMenu)
+    if Helper.does_instance_exist(select_) then
         enabled = false
         current_char = select_.choice
+        run_start_init = false
     end
 
 
@@ -119,15 +130,26 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
     if gm._mod_game_getDifficulty() == diff_id then
         enabled = true
 
-        if does_instance_exist(director) then
+        if Helper.does_instance_exist(director) then
 
             -- Reset variables when starting a new run
             if director.time_start <= 0 then
-                stored_time = 0
-                stored_stages = 0
-                stored_health = 0
-                stored_max_health = 0
-                credits_init = false
+                if not run_start_init then
+                    stored_time = 0
+                    credits_init = false
+                    run_start_init = true
+
+                    -- Reduce player health regen
+                    player = Helper.get_client_player()
+                    if Helper.does_instance_exist(player) then
+                        if player.hp_regen ~= nil then
+                            player.hp_regen = player.hp_regen * (1.0 - healing_reduction)
+                            player.hp_regen_base = player.hp_regen
+                            player.hp_regen_level = player.hp_regen_level * (1.0 - healing_reduction)
+                        end
+                    end
+                end
+            else run_start_init = false
             end
 
 
@@ -138,68 +160,16 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
                 -- Increase points by another 1 point per second
                 -- This is because the 1.5x scaling from point_scale does not apply to the initial 2 pps
                 director.points = director.points + (2 * point_scaling)
-
-                -- Loop through all instances and look for enemies (on team 2.0)                
-                for i = 1, #gm.CInstance.instances_active do
-                    local inst = gm.CInstance.instances_active[i]
-                    if inst.team == 2.0 and inst.init_diff_changes == nil then
-                        inst.init_diff_changes = true
-
-                        if inst.pHmax ~= nil then
-                            inst.pHmax = inst.pHmax * (1 + speed_bonus)
-                            inst.pHmax_base = inst.pHmax
-                        end
-                    end
-                end
-
             end
-        else director = find_cinstance_type(gm.constants.oDirectorControl)
-        end
-
-
-        -- Remove 50% of all healing
-        if does_instance_exist(player) then
-            -- Make sure the "healing" is not from stage transition
-            local stage_check = true
-            if does_instance_exist(director) and stored_stages < director.stages_passed then
-                stage_check = false
-                stored_stages = director.stages_passed
-            end
-
-            if stored_health > 0 and player.hp > stored_health and stored_max_health >= player.maxhp and stage_check then
-                player.hp = player.hp - ((player.hp - stored_health) * healing_reduction)
-            end
-
-            stored_health = player.hp
-            stored_max_health = player.maxhp
-
-        else
-            -- Using pref_name to identify which player is this client
-            local pref_name = ""
-            local init = find_cinstance_type(gm.constants.oInit)
-            if init then pref_name = init.pref_name end
-
-            -- Get the player that belongs to this client
-            local players = find_all_cinstance_type(gm.constants.oP)
-            if players then
-                for i = 1, #players do
-                    if players[i] then
-                        if players[i].user_name == pref_name then
-                            player = players[i]
-                            break
-                        end
-                    end
-                end
-            end
-
+        else director = Helper.find_active_instance(gm.constants.oDirectorControl)
         end
     end
 
 
     -- Save victory
-    if enabled and find_cinstance_type(gm.constants.oCutscenePlayback2) and not credits_init then
-        local results = find_cinstance_type(gm.constants.oResultsScreen)
-        if results then
+    if enabled and Helper.find_active_instance(gm.constants.oCutscenePlayback2) and not credits_init then
+        local results = Helper.find_active_instance(gm.constants.oResultsScreen)
+        if Helper.does_instance_exist(results) then
             credits_init = true
             victory[current_char + 1] = victory[current_char + 1] + 1
             pcall(toml.encodeToFile, {victory = victory}, {file = file_path, overwrite = true})

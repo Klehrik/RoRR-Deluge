@@ -32,3 +32,8 @@
 
 ### v1.1.2
 * Added selection sfx.
+
+### v1.1.3
+* Implemented healing reduction properly.
+    * No longer works by dealing damage equal to half of healing anymore.
+* Other internal changes
