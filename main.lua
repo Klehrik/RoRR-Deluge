@@ -1,8 +1,8 @@
--- Deluge v1.1.3
+-- Deluge v1.1.4
 -- Klehrik
 
 log.info("Successfully loaded ".._ENV["!guid"]..".")
-Helper = require("./helper")
+mods.on_all_mods_loaded(function() for k, v in pairs(mods) do if type(v) == "table" and v.hfuncs then Helper = v end end end)
 
 local initialized_diff = false
 
@@ -119,7 +119,7 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
 
     -- Reset some variables on the character select screen
     local select_ = Helper.find_active_instance(gm.constants.oSelectMenu)
-    if Helper.does_instance_exist(select_) then
+    if Helper.instance_exists(select_) then
         enabled = false
         current_char = select_.choice
         run_start_init = false
@@ -130,7 +130,7 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
     if gm._mod_game_getDifficulty() == diff_id then
         enabled = true
 
-        if Helper.does_instance_exist(director) then
+        if Helper.instance_exists(director) then
 
             -- Reset variables when starting a new run
             if director.time_start <= 0 then
@@ -141,7 +141,7 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
 
                     -- Reduce player health regen
                     player = Helper.get_client_player()
-                    if Helper.does_instance_exist(player) then
+                    if Helper.instance_exists(player) then
                         if player.hp_regen ~= nil then
                             player.hp_regen = player.hp_regen * (1.0 - healing_reduction)
                             player.hp_regen_base = player.hp_regen
@@ -169,7 +169,7 @@ gm.pre_script_hook(gm.constants.__input_system_tick, function()
     -- Save victory
     if enabled and Helper.find_active_instance(gm.constants.oCutscenePlayback2) and not credits_init then
         local results = Helper.find_active_instance(gm.constants.oResultsScreen)
-        if Helper.does_instance_exist(results) then
+        if Helper.instance_exists(results) then
             credits_init = true
             victory[current_char + 1] = victory[current_char + 1] + 1
             pcall(toml.encodeToFile, {victory = victory}, {file = file_path, overwrite = true})

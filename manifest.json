@@ -1,7 +1,10 @@
 ﻿{
 	"name": "Deluge",
-	"version_number": "1.1.3",
+	"version_number": "1.1.4",
 	"website_url": "https://github.com/Klehrik/RoRR-Deluge",
 	"description": "Adds a fourth difficulty option, for those who have conquered Monsoon.",
-	"dependencies": []
+	"dependencies": [
+		"ReturnOfModding-ReturnOfModding-1.0.20",
+		"Klehrik-HelperFunctions-1.0.1"
+	]
 }

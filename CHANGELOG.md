@@ -37,3 +37,7 @@
 * Implemented healing reduction properly.
     * No longer works by dealing damage equal to half of healing anymore.
 * Other internal changes
+
+### v1.1.4
+* Updated all my mods to use a single helper file.
+* Updated installation instructions to use the mod manager instead.
