@@ -1,0 +1,8 @@
+{
+    "difficulty" : {
+        "deluge" : {
+            "name" : "Deluge",
+            "description" : "For those who have conquered Monsoon.\nYou will be washed away in a flood of pain.\n\n<c_stack>Director credits     + 50%\nEnemy move speed    + 25%\nAll healing            - 50%"
+        }
+    }
+}
