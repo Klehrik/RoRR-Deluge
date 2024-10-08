@@ -1,4 +1,4 @@
--- Deluge v1.1.5
+-- Deluge
 -- Klehrik
 
 log.info("Successfully loaded ".._ENV["!guid"]..".")
@@ -23,7 +23,7 @@ local function add_extra_credits()
     -- This is because the 1.5x scaling from point_scale does not apply to the initial 2 pps
     if diff_active then
         local director = Instance.find(gm.constants.oDirectorControl)
-        director.points = director.points + (2 * point_scaling)
+        if director:exists() then director.points = director.points + (2 * point_scaling) end
 
         Alarm.create(add_extra_credits, 60)
     end
@@ -63,6 +63,8 @@ function __initialize()
 
             end
         end)
+
+        Alarm.create(add_extra_credits, 60)
     end)
 
     diff:onInactive(function()

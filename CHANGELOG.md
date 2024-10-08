@@ -1,3 +1,6 @@
+### v1.1.6
+* Forgot a small thing guh
+
 ### v1.1.5
 * Updated to use RMT.
 
