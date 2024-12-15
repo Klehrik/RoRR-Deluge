@@ -2,7 +2,7 @@
 -- Klehrik
 
 log.info("Successfully loaded ".._ENV["!guid"]..".")
-mods.on_all_mods_loaded(function() for _, m in pairs(mods) do if type(m) == "table" and m.RoRR_Modding_Toolkit then for _, c in ipairs(m.Classes) do if m[c] then _G[c] = m[c] end end end end end)
+mods["RoRRModdingToolkit-RoRR_Modding_Toolkit"].auto(true)
 
 PATH = _ENV["!plugins_mod_folder_path"].."/"
 
@@ -30,7 +30,7 @@ local function add_extra_credits()
 end
 
 
-function __initialize()
+Initialize(function()
     local diff = Difficulty.new("klehrik", "deluge")
     diff:set_sprite(
         Resources.sprite_load("klehrik", "delugeIcon", PATH.."deluge.png", 5, 12, 9),
@@ -45,7 +45,7 @@ function __initialize()
         1.7 * (1 + point_scaling)
     )
     diff:set_monsoon_or_higher(true)
-    diff:allow_blight_spawns(true)
+    diff:set_allow_blight_spawns(true)
 
     diff:onActive(function()
         diff_active = true
@@ -64,17 +64,17 @@ function __initialize()
             end
         end)
 
+        Actor:onHeal("deluge-healReduction", function(actor, heal_amount)
+            if not actor.team or actor.team ~= 1.0 then return end
+            return heal_amount * (1 - healing_reduction)
+        end)
+
         Alarm.create(add_extra_credits, 60)
     end)
 
     diff:onInactive(function()
         diff_active = false
         Actor.remove_callback("deluge-statChanges")
+        Actor.remove_callback("deluge-healReduction")
     end)
-
-    gm.pre_script_hook(gm.constants.actor_heal_networked, function(self, other, result, args)
-        if diff_active and args[1].value.object_index == gm.constants.oP then
-            args[2].value = args[2].value * (1 - healing_reduction)
-        end
-    end)
-end
+end)

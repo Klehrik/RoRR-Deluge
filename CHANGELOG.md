@@ -1,3 +1,10 @@
+### v1.1.8
+* Updated alongside RMT.
+
+### v1.1.7
+* New RMT one-liner and initialize change.
+* Small method renaming.
+
 ### v1.1.6
 * Forgot a small thing guh
 
